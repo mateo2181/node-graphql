@@ -47,7 +47,6 @@ server.applyMiddleware({ app });
 app.use('/auth', authRouter);
 app.use(express.static('uploads'));
 
-// app.use(express.static("app/public"));
 // The `listen` method launches a web server.
 app.listen({ port: 4000 }, () => {
     console.log(`🚀  Server ready at port 4000`);

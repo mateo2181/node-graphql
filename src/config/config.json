@@ -8,19 +8,19 @@
     "dialect": "mysql"
   },
   "test": {
-    "username": "root",
-    "password": null,
-    "database": "database_test",
-    "host": "127.0.0.1",
-    "dialect": "mysql",
-    "operatorsAliases": false
+    "username": "BgRfczvKzR",
+    "password": "BgRfczvKzR",
+    "database": "kiSyIHGh2x",
+    "host": "https://remotemysql.com",
+    "port": 3306,
+    "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": "secret",
-    "database": "db_books",
-    "host": "0.0.0.0",
-    "port": 33060,
+    "username": "BgRfczvKzR",
+    "password": "kiSyIHGh2x",
+    "database": "BgRfczvKzR",
+    "host": "https://remotemysql.com",
+    "port": 3306,
     "dialect": "mysql"
   }
 }

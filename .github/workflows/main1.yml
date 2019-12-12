@@ -1,0 +1,15 @@
+name: Deploy Heroku
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/heroku@master
+    - name: Deploy
+      run: git:remote -a express-graphql
+      env: 
+        key: ${{ secrets.HEROKU_API_TOKEN }}

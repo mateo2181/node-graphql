@@ -48,6 +48,6 @@ app.use('/auth', authRouter);
 app.use(express.static('uploads'));
 
 // The `listen` method launches a web server.
-app.listen({ port: 4000 }, () => {
+app.listen(process.env.PORT || 4000, () => {
     console.log(`🚀  Server ready at port 4000`);
 });

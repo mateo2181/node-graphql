@@ -9,9 +9,9 @@
   },
   "test": {
     "username": "BgRfczvKzR",
-    "password": "BgRfczvKzR",
-    "database": "kiSyIHGh2x",
-    "host": "https://remotemysql.com",
+    "password": "kiSyIHGh2x",
+    "database": "BgRfczvKzR",
+    "host": "remotemysql.com",
     "port": 3306,
     "dialect": "mysql"
   },
@@ -19,7 +19,7 @@
     "username": "BgRfczvKzR",
     "password": "kiSyIHGh2x",
     "database": "BgRfczvKzR",
-    "host": "https://remotemysql.com",
+    "host": "remotemysql.com",
     "port": 3306,
     "dialect": "mysql"
   }

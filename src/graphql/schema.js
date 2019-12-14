@@ -3,6 +3,9 @@ type Author {
     id: ID! 
     firstName: String
     lastName: String
+    description: String
+    image: String
+    nationality: String
     books: [Book] 
 }
 
@@ -38,7 +41,7 @@ type Token {
 }
 
 type Mutation {
-    createAuthor(firstName: String!, lastName: String!): Author!
+    createAuthor(firstName: String!, lastName: String!,description: String,nationality: String!,file: Upload!): Author!
     deleteAuthor(id: ID!): ID!
     createBook(title: String!, description: String, authorId: ID!,file: Upload!): Book!
     deleteBook(id: ID!): ID!

@@ -14,6 +14,15 @@ module.exports = {
       lastName: {
         type: Sequelize.STRING
       },
+      description: {
+        type: Sequelize.STRING(5000)
+      },
+      image: {
+        type: Sequelize.STRING
+      },
+      nationality: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

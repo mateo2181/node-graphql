@@ -3,12 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   const Book = sequelize.define('Book', {
     title: DataTypes.STRING,
     description: DataTypes.STRING,
-    image: {
-      type: DataTypes.STRING,
-      // get: function () {
-      //   return  '' + this.get('image');
-      // }
-    },
+    image: DataTypes.STRING,
     authorId: DataTypes.INTEGER
   }, {});
   Book.associate = function (models) {

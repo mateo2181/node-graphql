@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors')
+const rateLimit = require("express-rate-limit")
 import { ApolloServer, gql, AuthenticationError } from "apollo-server-express";
 import typeDefs from './graphql/schema';
 import resolvers from './graphql/resolvers';
@@ -14,23 +15,23 @@ const server = new ApolloServer({
     resolvers,
     context: async ({ req }) => {
         const token = req.headers.token || ''
-        // console.log(req.body);
+        // Por el momento sacamos el AUTH.
+        return { db };
         if (req.body.operationName == 'LoginMutation') return;
         try {
             let decoded = await authService.verifyUser(token);
             console.log(decoded);
             return { decoded, db };
         } catch (e) {
-            // throw new Error(e);
             throw new AuthenticationError('Authentication token is invalid, please log in')
         }
     },
     engine: {
         rewriteError(err) {
             // Return `null` to avoid reporting `AuthenticationError`s
-            if (err instanceof AuthenticationError) {
-                return null;
-            }
+            // if (err instanceof AuthenticationError) {
+            //     return null;
+            // }
             // All other errors will be reported.
             return err;
         }
@@ -42,6 +43,13 @@ app.use(cors());
 app.use(bodyParser.json())
 
 server.applyMiddleware({ app });
+
+const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100 // limit each IP to 100 requests per windowMs
+});
+//  apply to all requests
+app.use(limiter);
 
 // Routes Rest
 app.use('/auth', authRouter);

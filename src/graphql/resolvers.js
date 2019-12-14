@@ -19,15 +19,23 @@ export default {
         }
     },
     Mutation: {
-        createAuthor: (parent, { firstName, lastName }, { db }, info) => {
-            if (!firstName || !lastName) {
+        createAuthor: async (parent, { firstName, lastName, description, nationality, file }, { db }, info) => {
+            if (!firstName || !lastName || !nationality) {
                 throw new UserInputError('Form Arguments invalid', {
-                    invalidArgs: "FirstName and LastName are required",
+                    invalidArgs: "All files are required",
                 });
             }
+            let filenameSaved = null;
+            if (file) {
+                filenameSaved = await storeUpload(file);
+            }
+
             return db.Author.create({
                 firstName,
-                lastName
+                lastName,
+                description,
+                nationality,
+                image: filenameSaved ? filenameSaved : ''
             })
         },
         deleteAuthor: (parent, { id }, { db }, info) => {
@@ -39,7 +47,6 @@ export default {
         createBook: async (parent, { title, description, authorId, file }, { db }, info) => {
             // const { stream, mimetype } = await file;
             let filenameSaved = null;
-            // console.log(file);
             if (file) {
                 filenameSaved = await storeUpload(file);
             }

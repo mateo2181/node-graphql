@@ -48,5 +48,9 @@ type Mutation {
     login(email: String!, password: String!): Token!
     singleUploadBook(file: Upload!): File!
 }
+
+type Subscription {
+    newAuthor: Author
+  }
 `;
 export default schema;

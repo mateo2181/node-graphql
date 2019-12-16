@@ -1,12 +1,22 @@
-const { UserInputError } = require('apollo-server');
+const { PubSub, UserInputError } = require('apollo-server');
 import { storeUpload } from '../helpers/uploadFile';
 import { login } from '../auth/index';
+
+const pubsub = new PubSub();
+const NEW_AUTHOR = 'NEW_AUTHOR';
+
 export default {
     Author: {
         books: (parent, args, context, info) => parent.getBooks(),
     },
     Book: {
         author: (parent, args, context, info) => parent.getAuthor(),
+    },
+    Subscription: {
+        newAuthor: {
+            // Additional event labels can be passed to asyncIterator creation
+            subscribe: () => pubsub.asyncIterator([NEW_AUTHOR]),
+        },
     },
     Query: {
         books: (parent, args, { db }, info) => db.Book.findAll(),
@@ -30,13 +40,16 @@ export default {
                 filenameSaved = await storeUpload(file);
             }
 
-            return db.Author.create({
+            let author = db.Author.create({
                 firstName,
                 lastName,
                 description,
                 nationality,
                 image: filenameSaved ? filenameSaved : ''
             })
+
+            pubsub.publish(NEW_AUTHOR, { newAuthor: author });
+            return author;
         },
         deleteAuthor: (parent, { id }, { db }, info) => {
             db.Author.destroy({

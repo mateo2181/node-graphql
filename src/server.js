@@ -1,3 +1,4 @@
+const http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors')
@@ -13,7 +14,17 @@ import authService from './auth/index';
 const server = new ApolloServer({
     typeDefs: gql(typeDefs),
     resolvers,
-    context: async ({ req }) => {
+    subscriptions: {
+        onConnect: (connectionParams, webSocket, context) => {
+            // ...
+        },
+        onDisconnect: (webSocket, context) => {
+            // ...
+        },
+    },
+    context: async ({ req, connection }) => {
+        if (connection) return connection.context;
+
         const token = req.headers.token || ''
         // Por el momento sacamos el AUTH.
         return { db };
@@ -43,6 +54,8 @@ app.use(cors());
 app.use(bodyParser.json())
 
 server.applyMiddleware({ app });
+const httpServer = http.createServer(app);
+server.installSubscriptionHandlers(httpServer);
 
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
@@ -56,6 +69,8 @@ app.use('/auth', authRouter);
 app.use(express.static('uploads'));
 
 // The `listen` method launches a web server.
-app.listen(process.env.PORT || 4000, () => {
-    console.log(`🚀  Server ready at port 4000`);
+const PORT = process.env.PORT || 4000;
+httpServer.listen(PORT, (e) => {
+    console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`)
+    console.log(`🚀 Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}`)
 });

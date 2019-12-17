@@ -51,6 +51,27 @@ export default {
             pubsub.publish(NEW_AUTHOR, { newAuthor: author });
             return author;
         },
+        editAuthor: async (parent, { id, firstName, lastName, description, nationality, file }, { db }, info) => {
+            if (!firstName || !lastName || !nationality) {
+                throw new UserInputError('Form Arguments invalid', {
+                    invalidArgs: "All files are required",
+                });
+            }
+            let author = await db.Author.findByPk(id);
+            let filenameSaved = author.image;
+            if (file) {
+                filenameSaved = await storeUpload(file);
+            }
+
+            author.firstName = firstName;
+            author.lastName = lastName;
+            author.description = description || author.description;
+            author.nationality = nationality;
+            author.image = filenameSaved;
+            await author.save();
+
+            return author;
+        },
         deleteAuthor: (parent, { id }, { db }, info) => {
             db.Author.destroy({
                 where: { id }
@@ -70,8 +91,19 @@ export default {
                 image: filenameSaved ? filenameSaved : ''
             });
         },
-        singleUploadBook: (parent, { file }, { db }, info) => {
-            return storeUpload(file);
+        editBook: async (parent, { id,title, description, authorId, file }, { db }, info) => {
+            // const { stream, mimetype } = await file;
+            let book = await db.Book.findByPk(id);
+            let filenameSaved = book.image;
+            if (file) {
+                filenameSaved = await storeUpload(file);
+            }
+            book.title = title;
+            book.description = description || book.description;
+            book.authorId = authorId;
+            book.image = filenameSaved;
+            await book.save();
+            return book;
         },
         deleteBook: (parent, { id }, { db }, info) => {
             db.Book.destroy({ where: { id } });

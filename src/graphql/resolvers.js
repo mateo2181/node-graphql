@@ -37,7 +37,7 @@ export default {
             }
             let filenameSaved = null;
             if (file) {
-                filenameSaved = await storeUpload(file);
+                filenameSaved = await storeUpload(file,filenameSaved,'authors');
             }
 
             let author = db.Author.create({
@@ -60,7 +60,7 @@ export default {
             let author = await db.Author.findByPk(id);
             let filenameSaved = author.image;
             if (file) {
-                filenameSaved = await storeUpload(file);
+                filenameSaved = await storeUpload(file,filenameSaved,'authors');
             }
 
             author.firstName = firstName;
@@ -82,7 +82,7 @@ export default {
             // const { stream, mimetype } = await file;
             let filenameSaved = null;
             if (file) {
-                filenameSaved = await storeUpload(file);
+                filenameSaved = await storeUpload(file,filenameSaved,'books');
             }
             return db.Book.create({
                 title,
@@ -96,7 +96,7 @@ export default {
             let book = await db.Book.findByPk(id);
             let filenameSaved = book.image;
             if (file) {
-                filenameSaved = await storeUpload(file);
+                filenameSaved = await storeUpload(file,filenameSaved,'books');
             }
             book.title = title;
             book.description = description || book.description;

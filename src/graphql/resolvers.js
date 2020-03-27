@@ -19,8 +19,24 @@ export default {
         },
     },
     Query: {
-        books: (parent, args, { db }, info) => db.Book.findAll(),
-        authors: (parent, args, { db }, info) => db.Author.findAll(),
+        books: (parent, args, { db }, info) => {
+            let offset = args.offset || 0;
+            let limit = args.limit || 10;
+            return db.Book.findAll({
+                limit, 
+                offset,
+                order: [["title", "ASC"]]
+            })
+        },
+        authors: (parent, args, { db }, info) => {
+            let offset = args.offset || 0;
+            let limit = args.limit || 10;
+            return db.Author.findAll({
+                limit, 
+                offset,
+                order: [["firstName", "ASC"]]
+            })
+        },
         book: (parent, { id }, { db }, info) => db.Book.findByPk(id),
         author: (parent, { id }, { db }, info) => db.Author.findByPk(id),
         getUserLogged: (parent, args, { decoded, db }, info) => {

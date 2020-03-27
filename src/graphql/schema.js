@@ -30,9 +30,9 @@ type LoggedInUserPayload {
 
 type Query { 
     book(id: ID!): Book
-    books: [Book]
+    books(limit: Int, offset: Int): [Book]
     author(id: ID!): Author  
-    authors: [Author],
+    authors(limit: Int, offset: Int): [Author],
     getUserLogged: LoggedInUserPayload
 }
 
@@ -41,7 +41,7 @@ type Token {
 }
 
 type Mutation {
-    createAuthor(firstName: String!, lastName: String!,description: String,nationality: String!,file: Upload!): Author!
+    createAuthor(firstName: String!, lastName: String!,description: String,nationality: String!,file: Upload): Author!
     editAuthor(id: ID!,firstName: String!, lastName: String!,description: String,nationality: String!,file: Upload): Author!
     deleteAuthor(id: ID!): ID!
     createBook(title: String!, description: String, authorId: ID!,file: Upload): Book!

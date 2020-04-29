@@ -17,7 +17,7 @@
 
 ## Usage
 
-- Make sure to have installed Serverless globally (npm install -g serverless) and login with your user (serverless login).
+- Make sure to have installed Serverless globally (npm install -g serverless) and login with your account (serverless login).
 - Test locally with ``` serverless offline ```.
 - Deploy to AWS with ``` serverless deploy ```.
 

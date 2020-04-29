@@ -6,3 +6,4 @@ dist
 # Serverless directories
 .serverless
 env.yml
+.webpack

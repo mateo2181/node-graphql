@@ -34,6 +34,11 @@ custom:
     packagerOptions:
       scripts: # this is the magic
         - prisma generate 
+  serverless-offline:
+    httpPort: 3001
+  apigwBinary:
+    types:
+      - 'multipart/form-data'
 
 # you can add CloudFormation resource templates here
 #resources:

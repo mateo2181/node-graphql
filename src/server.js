@@ -1,9 +1,3 @@
-const http = require('http');
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors')
-const rateLimit = require("express-rate-limit")
-// import { ApolloServer, gql, AuthenticationError } from "apollo-server-express";
 const { ApolloServer, gql } = require('apollo-server-lambda');
 import typeDefs from './graphql/schema';
 import resolvers from './graphql/resolvers';
@@ -24,7 +18,7 @@ const server = new ApolloServer({
             prisma: createContext()
         };
         const token = req.headers.token || ''
-        // Por el momento sacamos el AUTH.
+        /** Authentication **/
         if (req.body.operationName == 'LoginMutation') return;
         // try {
         //     let decoded = await authService.verifyUser(token);
@@ -36,32 +30,6 @@ const server = new ApolloServer({
     },
     playground: true
 });
-
-// const app = express();
-// app.use(cors());
-// app.use(bodyParser.json())
-
-// server.applyMiddleware({ app });
-// const httpServer = http.createServer(app);
-// server.installSubscriptionHandlers(httpServer);
-
-// const limiter = rateLimit({
-//     windowMs: 15 * 60 * 1000, // 15 minutes
-//     max: 100 // limit each IP to 100 requests per windowMs
-// });
-//  apply to all requests
-// app.use(limiter);
-
-// Routes Rest
-// app.use('/auth', authRouter);
-// app.use(express.static('uploads'));
-
-// The `listen` method launches a web server.
-// const PORT = process.env.PORT || 4000;
-// httpServer.listen(PORT, (e) => {
-//     console.log(`🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`)
-//     console.log(`🚀 Subscriptions ready at ws://localhost:${PORT}${server.subscriptionsPath}`)
-// });
 
 const graphqlHandler = (event, context, callback) => {
     if (Object.keys(event.headers).includes('Content-Type')) {

@@ -1,13 +1,25 @@
-## Server
-```
-npm install
-```
-Set variables to connect database in server/config/config.json
-```
-npx sequelize-cli db:migrate
-```
-## Client
-```
-npm install
-npm run start
-```
+# GraphQL + Prisma2 + Serverless + AWS
+
+## Requirements
+
+* AWS Account
+* Serverless Framework
+* Cloudinary Account
+* MySQL Database
+
+## Installing
+
+- Run ``` npm install ```.
+- Create a database and import db.sql file to create tables.
+- Create env.yml following env.example.yml and fill variables. 
+- Run  ``` npx prisma generate ```.
+
+
+## Usage
+
+- Make sure to have installed Serverless globally (npm install -g serverless) and login with your user (serverless login).
+- Test locally with ``` serverless offline ```.
+- Deploy to AWS with ``` serverless deploy ```.
+
+
+

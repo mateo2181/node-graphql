@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Authors {
+  createdAt   DateTime @default(now())
+  description String
+  firstName   String?
+  id          Int      @default(autoincrement()) @id
+  image       String
+  lastName    String?
+  nationality String
+  updatedAt   DateTime @updatedAt
+  books       Books[]
+}
+
+model Books {
+  authorId    Int?
+  createdAt   DateTime @default(now())
+  description String?
+  id          Int      @default(autoincrement()) @id
+  image       String?
+  title       String?
+  updatedAt   DateTime @updatedAt
+  author      Authors? @relation(fields: [authorId], references: [id])
+
+  @@index([authorId], name: "authorId")
+}
+
+model Users {
+  createdAt DateTime @default(now())
+  email     String?
+  firstName String?
+  id        Int      @default(autoincrement()) @id
+  lastName  String?
+  password  String?
+  updatedAt DateTime @updatedAt
+}

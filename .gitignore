@@ -1,4 +1,8 @@
-dist
+# package directories
 node_modules
-uploads
-.env
+jspm_packages
+dist
+
+# Serverless directories
+.serverless
+env.yml

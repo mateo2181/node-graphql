@@ -1,5 +1,5 @@
 const { createWriteStream, unlink } = require('fs');
-const mkdirp = require('mkdirp');
+// const mkdirp = require('mkdirp');
 const shortid = require('shortid');
 const cloudinary = require('cloudinary').v2
 // const { ApolloServer } = require('apollo-server-koa')
@@ -8,9 +8,9 @@ const cloudinary = require('cloudinary').v2
 
 const UPLOAD_DIR = './uploads'
 
-mkdirp.sync(UPLOAD_DIR);
+// mkdirp.sync(UPLOAD_DIR);
 
-export const storeUpload = async (upload,oldFile = '',folderImage = '') => {
+export const storeUpload = async (upload, oldFile = '', folderImage = '') => {
   try {
 
     const { createReadStream, filename, mimetype } = await upload;
@@ -27,33 +27,31 @@ export const storeUpload = async (upload,oldFile = '',folderImage = '') => {
     const file = { id, filename, mimetype, path };
     const uniqueFilename = new Date().toISOString();
 
-    if(oldFile) {
+    if (oldFile) {
       let oldImage = oldFile.split('/');
-      oldImage = oldImage[oldImage.length-1].split('.').slice(0, -1).join('.');
+      oldImage = oldImage[oldImage.length - 1].split('.').slice(0, -1).join('.');
       let publicId = `${folderImage}/${oldImage}`;
       const responseDeleted = await cloudinary.uploader.destroy(publicId);
       console.log(responseDeleted);
     }
-    // Store the file in the filesystem.
+
+    let resultUrl = '';
     const url = await new Promise((resolve, reject) => {
-      stream
-      .on('error', error => {
-        unlink(path, () => {
-          reject(error)
-        })
-      })
-      .pipe(createWriteStream(path))
-      .on('error', reject)
-      .on('finish', async res => {
-          const response = await cloudinary.uploader.upload( path, { public_id: `${folderImage}/${uniqueFilename}`, tags: `${folderImage}` });
-          // console.log(response);
-          resolve(response.url);
-        })
-    })
+      const streamLoad = cloudinary.uploader.upload_stream({public_id: `${folderImage}/${uniqueFilename}`, tags: `${folderImage}`},function (error, result) {
+        if (result) {
+          // console.log("result ", result);
+          resultUrl = result.secure_url;
+          resolve(resultUrl);
+        }
+        else console.log("error ", error);
+      });
 
-    // Record the file metadata in the DB.
-    // db.get('uploads').push(file).write();
+      stream.pipe(streamLoad);
+    });
 
+    // const response = await cloudinary.uploader.upload(stream, { public_id: `${folderImage}/${uniqueFilename}`, tags: `${folderImage}` });
+
+    // console.log(url);
     return url;
   } catch (error) {
     console.log(error);

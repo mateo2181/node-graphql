@@ -35,7 +35,7 @@
     "jsonwebtoken": "^8.5.1",
     "lowdb": "^1.0.0",
     "mkdirp": "^0.5.1",
-    "mocha": "^6.2.2",
+    "mocha": "^10.2.0",
     "mysql2": "^2.0.1",
     "serverless": "^1.68.0",
     "serverless-http": "^2.3.2",

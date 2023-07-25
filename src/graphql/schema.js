@@ -1,4 +1,6 @@
 const schema = `
+scalar Upload
+
 type Author {
     id: ID! 
     firstName: String

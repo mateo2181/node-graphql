@@ -1,6 +1,6 @@
 import { ApolloServer } from '@apollo/server'
 import gql from 'graphql-tag'
-import { startServerAndCreateLambdaHandler, handlers } from '@as-integrations/aws-lambda'
+import { startStandaloneServer } from '@apollo/server/standalone'
 import typeDefs from './graphql/schema'
 import resolvers from './graphql/resolvers'
 import { createContext } from './context'
@@ -31,10 +31,8 @@ const server = new ApolloServer({
   playground: true
 })
 
-const graphqlHandler = startServerAndCreateLambdaHandler(
-  server,
-  // We will be using the Proxy V2 handler
-  handlers.createAPIGatewayProxyEventV2RequestHandler()
-)
-
-export { graphqlHandler }
+startStandaloneServer(server, {
+  listen: { port: 4000 }
+}).then(({ url }) => {
+  console.log(`Server ready at: ${url}`)
+})

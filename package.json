@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@apollo/server": "^4.8.1",
+    "@apollo/server": "^4.9.3",
     "@babel/cli": "^7.22.9",
     "@prisma/client": "^5.0.0",
     "bcrypt": "^5.1.0",
